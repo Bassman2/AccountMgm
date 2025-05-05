@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -17,5 +17,9 @@
   </PropertyGroup>
 
   <Import Project="..\AccountManagementApiShare\AccountManagementApiShare.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="9.0.4" />
+  </ItemGroup>
 
 </Project>
