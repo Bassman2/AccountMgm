@@ -1,10 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace AccountManagementApiShare;
 
-namespace AccountManagementApiShare
+internal class Group : BaseItem
 {
-    internal class Group
+    internal Group(GroupPrincipal item) : base(item)
     {
+        IsSecurityGroup = item.IsSecurityGroup;
     }
+
+    public IEnumerable<User> Members()
+    {
+
+    }
+
+    public bool? IsSecurityGroup { get; }
+
 }

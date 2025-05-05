@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace AccountManagementApiShare;
 
-namespace AccountManagementApiShare
+internal class Computer : BaseItem
 {
-    internal class Computer
+    internal Computer(ComputerPrincipal item) : base(item)
     {
     }
+
 }

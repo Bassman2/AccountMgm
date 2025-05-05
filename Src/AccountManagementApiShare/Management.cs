@@ -15,27 +15,64 @@ internal static class Management
 
     public static IEnumerable<User> GetUsers()
     {
-        using UserPrincipal u = new UserPrincipal(context);
-        using PrincipalSearcher search = new PrincipalSearcher(u);
-        using var results = search.FindAll();
+        using var userPrincipal = new UserPrincipal(context);
+        using var searcher = new PrincipalSearcher(userPrincipal);
+        using var results = searcher.FindAll();
         foreach (Principal result in results)
         {
-            if (result is UserPrincipal user) 
-            { 
-                yield return new User()
-                {
-                    Name = user.Name,
-                    SamAccountName = user.SamAccountName,
-                    UserPrincipalName = user.UserPrincipalName,
-                    EmailAddress = user.EmailAddress,
-                    DisplayName = user.DisplayName,
-                    Description = user.Description,
-                    LastLogon = user.LastLogon,
-                    LastPasswordSet = user.LastPasswordSet,
-                    IsAccountDisabled = user.IsAccountDisabled,
-                };
+            if (result is UserPrincipal item) 
+            {
+                yield return new User(item);
             }
         }
+
+    }
+
+    public static IEnumerable<Group> GetGroups()
+    {
+        using var groupPrincipal = new GroupPrincipal(context);
+        using var searcher = new PrincipalSearcher(groupPrincipal);
+        using var results = searcher.FindAll();
+        foreach (Principal result in results)
+        {
+            if (result is GroupPrincipal item)
+            {
+                yield return new Group(item);
+            }
+        }
+
+    }
+
+    public static IEnumerable<User> GetGroupMembers(Group group)
+    {
+        using var groupPrincipal = GroupPrincipal.FindByIdentity(context, IdentityType.Sid, group.Sid);
+        using var results = groupPrincipal.GetMembers();
+        foreach (var result in results)
+        {
+            if (result is UserPrincipal user)
+            {
+                yield return new User(user);
+            }
+        }
+    }
+
+    public static void AddUserToGroup(Group group, User user)
+    {
+        using var groupPrincipal = GroupPrincipal.FindByIdentity(context, IdentityType.Sid, group.Sid);
+        //using var userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, user.Sid);
+        //groupPrincipal.Members.Add(userPrincipal);
+
+        groupPrincipal.Members.Add(context, IdentityType.Sid, user.Sid);
+        
+    }
+
+    public static void RemoveUserFromGroup(Group group, User user)
+    {
+        using var groupPrincipal = GroupPrincipal.FindByIdentity(context, IdentityType.Sid, group.Sid);
+        //using var userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, user.Sid);
+        //groupPrincipal.Members.Add(userPrincipal);
+
+        groupPrincipal.Members.Remove(context, IdentityType.Sid, user.Sid);
 
     }
 }

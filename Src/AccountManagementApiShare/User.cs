@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace AccountManagementApiShare;
 
-namespace AccountManagementApiShare
+public class User : BaseItem
 {
-    internal class User
-    {
+    internal User(UserPrincipal item) : base (item)
+    { 
     }
+
+    
 }

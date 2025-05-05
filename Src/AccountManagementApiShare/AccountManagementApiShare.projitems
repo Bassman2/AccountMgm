@@ -9,6 +9,7 @@
     <Import_RootNamespace>AccountManagementApiShare</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)BaseItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Computer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Group.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Management.cs" />
