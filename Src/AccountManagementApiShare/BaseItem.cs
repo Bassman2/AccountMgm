@@ -1,22 +1,91 @@
 ﻿namespace AccountManagementApiShare;
 
-public class BaseItem
+/// <summary>
+/// Represents a base class for directory service items, providing common properties and operations.
+/// </summary>
+public abstract class BaseItem
 {
+    /// <summary>
+    /// The domain name of the current environment.
+    /// </summary>
+    protected static readonly string domainName = IPGlobalProperties.GetIPGlobalProperties().DomainName;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BaseItem"/> class.
+    /// </summary>
+    /// <param name="item">The <see cref="Principal"/> object representing the directory service item.</param>
     internal BaseItem(Principal item)
     {
-
         Description = item.Description;
         DisplayNme = item.DisplayName;
         DistinguishedName = item.DistinguishedName;
+        Guid = item.Guid;
         Name = item.Name;
         SamAccountName = item.SamAccountName;
         Sid = item.Sid.Value;
+        UserPrincipalName = item.UserPrincipalName;
     }
+
+    /// <summary>
+    /// Deletes the directory service item.
+    /// </summary>
+    public void Delete()
+    {
+        using var context = new PrincipalContext(ContextType.Domain, domainName);
+        using var principal = Principal.FindByIdentity(context, IdentityType.Sid, Sid);
+        principal?.Delete();
+    }
+
+    /// <summary>
+    /// Determines whether the current item is a member of the specified group.
+    /// </summary>
+    /// <param name="group">The <see cref="Group"/> to check membership against.</param>
+    /// <returns><c>true</c> if the item is a member of the group; otherwise, <c>false</c>.</returns>
+    public bool IsMemberOf(Group group)
+    {
+        using var context = new PrincipalContext(ContextType.Domain, domainName);
+        using var principal = Principal.FindByIdentity(context, IdentityType.Sid, Sid);
+        using var groupPrincipal = GroupPrincipal.FindByIdentity(context, IdentityType.Sid, group.Sid);
+        return principal?.IsMemberOf(groupPrincipal) ?? false;
+    }
+
+    /// <summary>
+    /// Gets the description of the directory service item.
+    /// </summary>
     public string Description { get; }
+
+    /// <summary>
+    /// Gets the display name of the directory service item.
+    /// </summary>
     public string DisplayNme { get; }
+
+    /// <summary>
+    /// Gets the distinguished name of the directory service item.
+    /// </summary>
     public string DistinguishedName { get; }
+
+    /// <summary>
+    /// Gets the globally unique identifier (GUID) of the directory service item.
+    /// </summary>
+    public Guid? Guid { get; }
+
+    /// <summary>
+    /// Gets the name of the directory service item.
+    /// </summary>
     public string Name { get; }
+
+    /// <summary>
+    /// Gets the SAM account name of the directory service item.
+    /// </summary>
     public string SamAccountName { get; }
 
+    /// <summary>
+    /// Gets the security identifier (SID) of the directory service item.
+    /// </summary>
     public string Sid { get; }
+
+    /// <summary>
+    /// Gets the user principal name (UPN) of the directory service item.
+    /// </summary>
+    public string UserPrincipalName { get; }
 }
