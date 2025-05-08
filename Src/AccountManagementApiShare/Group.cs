@@ -21,8 +21,8 @@ public class Group : BaseItem
     public static IEnumerable<Group> GetGroups()
     {
         using var context = new PrincipalContext(ContextType.Domain, domainName);
-        using var groupPrincipal = new GroupPrincipal(context);
-        using var searcher = new PrincipalSearcher(groupPrincipal);
+        using var principal = new GroupPrincipal(context);
+        using var searcher = new PrincipalSearcher(principal);
         using var results = searcher.FindAll();
         foreach (Principal result in results)
         {
@@ -41,8 +41,8 @@ public class Group : BaseItem
     public static IEnumerable<Group> GetGroupsByName(string filter)
     {
         using var context = new PrincipalContext(ContextType.Domain, domainName);
-        using var groupPrincipal = new GroupPrincipal(context) { Name = filter };
-        using var searcher = new PrincipalSearcher(groupPrincipal);
+        using var principal = new GroupPrincipal(context) { Name = filter };
+        using var searcher = new PrincipalSearcher(principal);
         using var results = searcher.FindAll();
         foreach (Principal result in results)
         {

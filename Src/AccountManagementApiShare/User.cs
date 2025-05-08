@@ -26,8 +26,28 @@ public class User : Authenticable
     public static IEnumerable<User> GetUsers()
     {
         using var context = new PrincipalContext(ContextType.Domain, domainName);
-        using var userPrincipal = new UserPrincipal(context);
-        using var searcher = new PrincipalSearcher(userPrincipal);
+        using var principal = new UserPrincipal(context);
+        using var searcher = new PrincipalSearcher(principal);
+        using var results = searcher.FindAll();
+        foreach (Principal result in results)
+        {
+            if (result is UserPrincipal item)
+            {
+                yield return new User(item);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Retrieves users in the domain whose names match the specified filter.
+    /// </summary>
+    /// <param name="filter">The name filter to apply when searching for users.</param>
+    /// <returns>An enumerable collection of <see cref="User"/> objects that match the filter.</returns>
+    public static IEnumerable<User> GetUsersByName(string filter)
+    {
+        using var context = new PrincipalContext(ContextType.Domain, domainName);
+        using var principal = new UserPrincipal(context) { Name = filter };
+        using var searcher = new PrincipalSearcher(principal);
         using var results = searcher.FindAll();
         foreach (Principal result in results)
         {
