@@ -14,11 +14,23 @@ public class Group : BaseItem
         IsSecurityGroup = item.IsSecurityGroup;
     }
 
+    public Group(string name, string sid) : base(name, sid)
+    { }
+
+    public static Group? FindGroup(string name)
+    {
+        using var context = new PrincipalContext(ContextType.Domain, domainName);
+        using var principal = new GroupPrincipal(context) { Name = name };
+        using var searcher = new PrincipalSearcher(principal);
+        using var group = searcher.FindOne() as GroupPrincipal;
+        return group is null ? null : new Group(group);
+    }
+
     /// <summary>
     /// Retrieves all groups in the domain.
     /// </summary>
     /// <returns>An enumerable collection of <see cref="Group"/> objects.</returns>
-    public static IEnumerable<Group> GetGroups()
+    public static IEnumerable<Group> FindGroups()
     {
         using var context = new PrincipalContext(ContextType.Domain, domainName);
         using var principal = new GroupPrincipal(context);
@@ -38,10 +50,10 @@ public class Group : BaseItem
     /// </summary>
     /// <param name="filter">The name filter to apply when searching for groups.</param>
     /// <returns>An enumerable collection of <see cref="Group"/> objects.</returns>
-    public static IEnumerable<Group> GetGroupsByName(string filter)
+    public static IEnumerable<Group> FindGroups(string name = "")
     {
         using var context = new PrincipalContext(ContextType.Domain, domainName);
-        using var principal = new GroupPrincipal(context) { Name = filter };
+        using var principal = new GroupPrincipal(context) { Name = name };
         using var searcher = new PrincipalSearcher(principal);
         using var results = searcher.FindAll();
         foreach (Principal result in results)

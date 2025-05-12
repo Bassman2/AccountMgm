@@ -19,13 +19,23 @@ public abstract class BaseItem
     internal BaseItem(Principal item)
     {
         Description = item.Description;
-        DisplayNme = item.DisplayName;
+        DisplayName = item.DisplayName;
         DistinguishedName = item.DistinguishedName;
         Guid = item.Guid;
         Name = item.Name;
         SamAccountName = item.SamAccountName;
         Sid = item.Sid.Value;
         UserPrincipalName = item.UserPrincipalName;
+    }
+
+    public BaseItem(string name, string sid) 
+    {
+        Name = name;
+        Sid = sid;
+        Description = string.Empty;
+        DisplayName = string.Empty;
+        DistinguishedName = string.Empty;
+
     }
 
     public static IEnumerable<T> GetPrinciples<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors | DynamicallyAccessedMemberTypes.PublicConstructors)] T, P>() where T : BaseItem, new() where P : Principal, new()
@@ -39,6 +49,20 @@ public abstract class BaseItem
             if (result is P item)
             {
                 yield return (T)Activator.CreateInstance(typeof(T), ConstructorDefault, null, [item], null)!;
+            }
+        }
+    }
+
+    public IEnumerable<Group> GetGroups()
+    {
+        using var context = new PrincipalContext(ContextType.Domain, domainName);
+        using var item = Principal.FindByIdentity(context, IdentityType.Sid, Sid);
+        using var results = item.GetGroups(context);
+        foreach (var result in results)
+        {
+            if (result is GroupPrincipal group)
+            {
+                yield return new Group(group);
             }
         }
     }
@@ -66,6 +90,10 @@ public abstract class BaseItem
         return principal?.IsMemberOf(groupPrincipal) ?? false;
     }
 
+    public override int GetHashCode() => Sid.GetHashCode();
+
+    public override bool Equals(object? obj) => /*obj != null &&*/ obj is BaseItem item && Sid == item.Sid;
+
     /// <summary>
     /// Gets the description of the directory service item.
     /// </summary>
@@ -74,7 +102,7 @@ public abstract class BaseItem
     /// <summary>
     /// Gets the display name of the directory service item.
     /// </summary>
-    public string DisplayNme { get; }
+    public string DisplayName { get; }
 
     /// <summary>
     /// Gets the distinguished name of the directory service item.

@@ -23,11 +23,11 @@ public class User : Authenticable
     /// Retrieves all users in the domain.
     /// </summary>
     /// <returns>An enumerable collection of <see cref="User"/> objects.</returns>
-    public static IEnumerable<User> GetUsers()
+    public static IEnumerable<User> FindUsers()
     {
         using var context = new PrincipalContext(ContextType.Domain, domainName);
-        using var principal = new UserPrincipal(context);
-        using var searcher = new PrincipalSearcher(principal);
+        using var filter = new UserPrincipal(context);
+        using var searcher = new PrincipalSearcher(filter);
         using var results = searcher.FindAll();
         foreach (Principal result in results)
         {
@@ -41,13 +41,16 @@ public class User : Authenticable
     /// <summary>
     /// Retrieves users in the domain whose names match the specified filter.
     /// </summary>
-    /// <param name="filter">The name filter to apply when searching for users.</param>
+    /// <param name="name">The name filter to apply when searching for users.</param>
     /// <returns>An enumerable collection of <see cref="User"/> objects that match the filter.</returns>
-    public static IEnumerable<User> GetUsersByName(string filter)
+    public static IEnumerable<User> FindUsers(string? name = null, bool? enabled = null, string? surname = null)
     {
         using var context = new PrincipalContext(ContextType.Domain, domainName);
-        using var principal = new UserPrincipal(context) { Name = filter };
-        using var searcher = new PrincipalSearcher(principal);
+        using var filter = new UserPrincipal(context);
+        if (name != null)   filter.Name = name;
+        if (enabled != null) filter.Enabled = enabled;
+        if (surname != null) filter.Surname = surname;
+        using var searcher = new PrincipalSearcher(filter);
         using var results = searcher.FindAll();
         foreach (Principal result in results)
         {
