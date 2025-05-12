@@ -6,7 +6,7 @@
     <SharedGUID>740d72cf-bea8-4700-aae8-2d81010347e9</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>AccountManagementApiShare</Import_RootNamespace>
+    <Import_RootNamespace>AccountMgm</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Authenticable.cs" />

@@ -1,4 +1,4 @@
-﻿namespace AccountManagementApiShare;
+﻿namespace AccountMgm;
 
 /// <summary>
 /// Represents an authenticable directory service item, providing properties related to authentication and account management.

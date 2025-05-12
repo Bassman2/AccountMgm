@@ -1,4 +1,4 @@
-﻿namespace AccountManagementApiShare;
+﻿namespace AccountMgm;
 
 /// <summary>
 /// Represents a group in the account management system.

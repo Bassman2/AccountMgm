@@ -1,7 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-
-namespace AccountManagementApiShare;
+﻿
+namespace AccountMgm;
 
 /// <summary>
 /// Represents a base class for directory service items, providing common properties and operations.

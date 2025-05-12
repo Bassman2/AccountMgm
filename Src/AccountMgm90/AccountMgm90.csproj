@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Version>0.1.0.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -16,7 +17,7 @@
     <IsAotCompatible>True</IsAotCompatible>
   </PropertyGroup>
 
-  <Import Project="..\AccountManagementApiShare\AccountManagementApiShare.projitems" Label="Shared" />
+  <Import Project="..\AccountMgmShare\AccountMgmShare.projitems" Label="Shared" />
 
   <ItemGroup>
     <PackageReference Include="System.DirectoryServices.AccountManagement" Version="9.0.4" />
