@@ -1,4 +1,7 @@
-﻿namespace AccountMgm;
+﻿using System.Globalization;
+using System.Net.Mail;
+
+namespace AccountMgm;
 
 /// <summary>
 /// Represents a user in the account management system.
@@ -60,6 +63,9 @@ public class User : Authenticable
             }
         }
     }
+
+    public override string Info => $"{base.Info}\r\nGivenName: {GivenName}\r\nMiddleName: {MiddleName}\r\nSurname: {Surname}\r\nPhone: {VoiceTelephoneNumber}\r\nEmployeeId: {EmployeeId}\r\nEmailAddress: {EmailAddress}";
+
 
     /// <summary>
     /// Gets the email address of the user.

@@ -14,13 +14,15 @@ public abstract class Authenticable : BaseItem
         AccountExpirationDate = item.AccountExpirationDate;
         BadLogonCount = item.BadLogonCount;
         HomeDirectory = item.HomeDirectory;
-        IsAccountEnabled = item.Enabled ?? false;
+        Enabled = item.Enabled ?? false;
         LastLogon = item.LastLogon;
         LastPasswordSet = item.LastPasswordSet;
         PasswordNeverExpires = item.PasswordNeverExpires;
         PasswordNotRequired = item.PasswordNotRequired;
         ScriptPath = item.ScriptPath;
     }
+
+    public override string Info => $"{base.Info}\r\nEnabled: {Enabled}";
 
     /// <summary>
     /// Gets the account expiration date of the directory service item.
@@ -40,7 +42,7 @@ public abstract class Authenticable : BaseItem
     /// <summary>
     /// Gets a value indicating whether the account is enabled.
     /// </summary>
-    public bool IsAccountEnabled { get; }
+    public bool Enabled { get; }
 
     /// <summary>
     /// Gets the date and time of the last logon for the directory service item.

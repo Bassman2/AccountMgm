@@ -1,4 +1,6 @@
-﻿namespace AccountMgm;
+﻿using System.Net.Mail;
+
+namespace AccountMgm;
 
 /// <summary>
 /// Represents a base class for directory service items, providing common properties and operations.
@@ -35,6 +37,8 @@ public abstract class BaseItem
         Description = string.Empty;
         DisplayName = string.Empty;
         DistinguishedName = string.Empty;
+        SamAccountName = string.Empty;
+        UserPrincipalName = string.Empty;
 
     }
 
@@ -89,6 +93,8 @@ public abstract class BaseItem
         using var groupPrincipal = GroupPrincipal.FindByIdentity(context, IdentityType.Sid, group.Sid);
         return principal?.IsMemberOf(groupPrincipal) ?? false;
     }
+
+    public virtual string Info => $"Name: {Name}\r\nDescription: {Description}\r\nSid: {Sid}\r\nDisplayName: {DisplayName}\r\nDistinguishedName: {DistinguishedName}\r\nSamAccountName: {SamAccountName}\r\nUserPrincipalName: {UserPrincipalName}";
 
     public override int GetHashCode() => Sid.GetHashCode();
 
