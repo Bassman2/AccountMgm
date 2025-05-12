@@ -1,0 +1,1 @@
+nuget pack AccountMgm.nuspec -properties Configuration=Release
