@@ -20,10 +20,10 @@ public class Group : BaseItem
     public static Group? FindGroup(string name)
     {
         using var context = new PrincipalContext(ContextType.Domain, domainName);
-        using var principal = new GroupPrincipal(context) { Name = name };
-        using var searcher = new PrincipalSearcher(principal);
-        using var group = searcher.FindOne() as GroupPrincipal;
-        return group is null ? null : new Group(group);
+        using var find = new GroupPrincipal(context) { Name = name };
+        using var searcher = new PrincipalSearcher(find);
+        using var item = searcher.FindOne() as GroupPrincipal;
+        return item is null ? null : new Group(item);
     }
 
     /// <summary>
@@ -50,11 +50,23 @@ public class Group : BaseItem
     /// </summary>
     /// <param name="filter">The name filter to apply when searching for groups.</param>
     /// <returns>An enumerable collection of <see cref="Group"/> objects.</returns>
-    public static IEnumerable<Group> FindGroups(string name = "")
+    public static IEnumerable<Group> FindGroups(
+        // BaseItem
+        string? displayName = null,
+        string? name = null,
+        string? samAccountName = null,
+        string? userPrincipalName = null,
+        // Group
+        bool? isSecurityGroup = null)
     {
         using var context = new PrincipalContext(ContextType.Domain, domainName);
-        using var principal = new GroupPrincipal(context) { Name = name };
-        using var searcher = new PrincipalSearcher(principal);
+        using var filter = new GroupPrincipal(context);
+        if (displayName != null) filter.DisplayName = displayName;
+        if (name != null) filter.Name = name;
+        if (samAccountName != null) filter.SamAccountName = samAccountName;
+        if (userPrincipalName != null) filter.UserPrincipalName = userPrincipalName;
+        if (isSecurityGroup != null) filter.IsSecurityGroup = isSecurityGroup;
+        using var searcher = new PrincipalSearcher(filter);
         using var results = searcher.FindAll();
         foreach (Principal result in results)
         {
@@ -69,11 +81,11 @@ public class Group : BaseItem
     /// Retrieves the members of the group.
     /// </summary>
     /// <returns>An enumerable collection of <see cref="User"/> objects representing the group members.</returns>
-    public IEnumerable<User> GetGroupMembers()
+    public IEnumerable<User> GetMembers()
     {
         using var context = new PrincipalContext(ContextType.Domain, domainName);
-        using var groupPrincipal = GroupPrincipal.FindByIdentity(context, IdentityType.Sid, Sid);
-        using var results = groupPrincipal.GetMembers();
+        using var group = GroupPrincipal.FindByIdentity(context, IdentityType.Sid, Sid);
+        using var results = group.GetMembers();
         foreach (var result in results)
         {
             if (result is UserPrincipal user)

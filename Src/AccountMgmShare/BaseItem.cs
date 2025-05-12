@@ -42,20 +42,20 @@ public abstract class BaseItem
 
     }
 
-    public static IEnumerable<T> GetPrinciples<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors | DynamicallyAccessedMemberTypes.PublicConstructors)] T, P>() where T : BaseItem, new() where P : Principal, new()
-    {
-        using var context = new PrincipalContext(ContextType.Domain, domainName);
-        using var principal = new P();
-        using var searcher = new PrincipalSearcher(principal);
-        using var results = searcher.FindAll();
-        foreach (Principal result in results)
-        {
-            if (result is P item)
-            {
-                yield return (T)Activator.CreateInstance(typeof(T), ConstructorDefault, null, [item], null)!;
-            }
-        }
-    }
+    //public static IEnumerable<T> GetPrinciples<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors | DynamicallyAccessedMemberTypes.PublicConstructors)] T, P>() where T : BaseItem, new() where P : Principal, new()
+    //{
+    //    using var context = new PrincipalContext(ContextType.Domain, domainName);
+    //    using var principal = new P();
+    //    using var searcher = new PrincipalSearcher(principal);
+    //    using var results = searcher.FindAll();
+    //    foreach (Principal result in results)
+    //    {
+    //        if (result is P item)
+    //        {
+    //            yield return (T)Activator.CreateInstance(typeof(T), ConstructorDefault, null, [item], null)!;
+    //        }
+    //    }
+    //}
 
     public IEnumerable<Group> GetGroups()
     {

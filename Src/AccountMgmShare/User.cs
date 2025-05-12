@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Net.Mail;
+﻿using System.Diagnostics;
 
 namespace AccountMgm;
 
@@ -20,6 +19,32 @@ public class User : Authenticable
         MiddleName = item.MiddleName;
         Surname = item.Surname;
         VoiceTelephoneNumber = item.VoiceTelephoneNumber;
+    }
+
+    public User(string name, string sid) : base(name, sid)
+    {
+        EmailAddress = string.Empty;
+        EmployeeId = string.Empty;
+        GivenName = string.Empty;
+        MiddleName = string.Empty;
+        Surname = string.Empty;
+        VoiceTelephoneNumber = string.Empty;
+    }
+
+    public static User Current()
+    {
+        //using var context = new PrincipalContext(ContextType.Domain, domainName);
+        using var item = UserPrincipal.Current;
+        return new User(item);
+    }
+
+    public static User? FindUser(string name)
+    {
+        using var context = new PrincipalContext(ContextType.Domain, domainName);
+        using var find = new ComputerPrincipal(context) { Name = name };
+        using var searcher = new PrincipalSearcher(find);
+        using var item = searcher.FindOne() as UserPrincipal;
+        return item is null ? null : new User(item);
     }
 
     /// <summary>
@@ -46,13 +71,35 @@ public class User : Authenticable
     /// </summary>
     /// <param name="name">The name filter to apply when searching for users.</param>
     /// <returns>An enumerable collection of <see cref="User"/> objects that match the filter.</returns>
-    public static IEnumerable<User> FindUsers(string? name = null, bool? enabled = null, string? surname = null)
+    public static IEnumerable<User> FindUsers(
+        // BaseItem
+        string? displayName = null,
+        string? name = null,
+        string? samAccountName = null,
+        string? userPrincipalName = null,
+        // Authenticable
+        bool? enabled = null, 
+        // User
+        string? emailAddress = null,
+        string? employeeId = null,
+        string? givenName = null,
+        string? middleName = null,
+        string? surname = null,
+        string? voiceTelephoneNumber = null)
     {
         using var context = new PrincipalContext(ContextType.Domain, domainName);
         using var filter = new UserPrincipal(context);
+        if (displayName != null) filter.DisplayName = displayName;
         if (name != null)   filter.Name = name;
+        if (samAccountName != null) filter.SamAccountName = samAccountName;
+        if (userPrincipalName != null) filter.UserPrincipalName = userPrincipalName;
         if (enabled != null) filter.Enabled = enabled;
+        if (emailAddress != null) filter.EmailAddress = emailAddress;
+        if (employeeId != null) filter.EmployeeId = employeeId;
+        if (givenName != null) filter.GivenName = givenName;
+        if (middleName != null) filter.MiddleName = middleName;
         if (surname != null) filter.Surname = surname;
+        if (voiceTelephoneNumber != null) filter.VoiceTelephoneNumber = voiceTelephoneNumber; 
         using var searcher = new PrincipalSearcher(filter);
         using var results = searcher.FindAll();
         foreach (Principal result in results)

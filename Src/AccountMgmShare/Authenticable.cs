@@ -22,6 +22,12 @@ public abstract class Authenticable : BaseItem
         ScriptPath = item.ScriptPath;
     }
 
+    public Authenticable(string name, string sid) : base(name, sid)
+    {
+        HomeDirectory = string.Empty;
+        ScriptPath= string.Empty;
+    }
+
     public override string Info => $"{base.Info}\r\nEnabled: {Enabled}";
 
     /// <summary>
