@@ -36,7 +36,7 @@ public abstract class Authenticable : BaseItem
     /// <summary>
     /// Gets a string containing information about the authenticable item.
     /// </summary>
-    public override string Info => $"Enabled: {Enabled}";
+    public override string Info => $"{base.Info}\r\nEnabled: {Enabled}";
 
     /// <summary>
     /// Gets the account expiration date of the directory service item.

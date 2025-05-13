@@ -20,6 +20,25 @@ public class User : Authenticable
     }
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="User"/> class.
+    /// </summary>
+    /// <param name="item">The <see cref="UserPrincipalExt"/> object representing the user.</param>
+    internal User(UserPrincipalExt item) : this((UserPrincipal) item)
+    {
+        Title = item.Title;
+        Department = item.Department;
+        Company = item.Company;
+        Street = item.Street;
+        PostalCode = item.PostalCode;
+        City = item.City;
+        Country = item.Country;
+        CountryAbbreviation = item.CountryAbbreviation;
+        State = item.State;
+        MobileTelephoneNumber = item.MobileTelephoneNumber;
+        RoomNumber = item.RoomNumber;
+    }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="User"/> class with the specified name and security identifier (SID).
     /// </summary>
     /// <param name="name">The name of the user.</param>
@@ -57,9 +76,9 @@ public class User : Authenticable
     public static User? FindUser(string name)
     {
         using var context = new PrincipalContext(ContextType.Domain, domainName);
-        using var find = new ComputerPrincipal(context) { Name = name };
+        using var find = new UserPrincipalExt(context) { Name = name };
         using var searcher = new PrincipalSearcher(find);
-        using var item = searcher.FindOne() as UserPrincipal;
+        using var item = searcher.FindOne() as UserPrincipalExt;
         return item is null ? null : new User(item);
     }
 
@@ -70,12 +89,12 @@ public class User : Authenticable
     public static IEnumerable<User> FindUsers()
     {
         using var context = new PrincipalContext(ContextType.Domain, domainName);
-        using var filter = new UserPrincipal(context);
+        using var filter = new UserPrincipalExt(context);
         using var searcher = new PrincipalSearcher(filter);
         using var results = searcher.FindAll();
         foreach (Principal result in results)
         {
-            if (result is UserPrincipal item)
+            if (result is UserPrincipalExt item)
             {
                 yield return new User(item);
             }
@@ -116,7 +135,7 @@ public class User : Authenticable
         string? voiceTelephoneNumber = null)
     {
         using var context = new PrincipalContext(ContextType.Domain, domainName);
-        using var filter = new UserPrincipal(context);
+        using var filter = new UserPrincipalExt(context);
         if (displayName != null) filter.DisplayName = displayName;
         if (name != null)   filter.Name = name;
         if (samAccountName != null) filter.SamAccountName = samAccountName;
@@ -132,7 +151,7 @@ public class User : Authenticable
         using var results = searcher.FindAll();
         foreach (Principal result in results)
         {
-            if (result is UserPrincipal item)
+            if (result is UserPrincipalExt item)
             {
                 yield return new User(item);
             }
@@ -143,8 +162,7 @@ public class User : Authenticable
     /// Gets a string containing detailed information about the user, including base account information and user-specific properties
     /// such as given name, middle name, surname, phone number, employee ID, and email address.
     /// </summary>
-    public override string Info => $"{base.Info}\r\nGivenName: {GivenName}\r\nMiddleName: {MiddleName}\r\nSurname: {Surname}\r\nPhone: {VoiceTelephoneNumber}\r\nEmployeeId: {EmployeeId}\r\nEmailAddress: {EmailAddress}";
-
+    public override string Info => $"{base.Info}\r\nGivenName: {GivenName}\r\nMiddleName: {MiddleName}\r\nSurname: {Surname}\r\nPhone: {VoiceTelephoneNumber}\r\nEmployeeId: {EmployeeId}\r\nEmailAddress: {EmailAddress}\r\nRoomNumber: {RoomNumber}";
 
     /// <summary>
     /// Gets the email address of the user.
@@ -175,4 +193,23 @@ public class User : Authenticable
     /// Gets the voice telephone number of the user.
     /// </summary>
     public string VoiceTelephoneNumber { get; }
+
+    // extention
+
+    public string? Title { get; }
+    public string? Department { get; }
+
+    public string? Company { get; }
+
+    public string? Street { get; }
+    public string? PostalCode { get; }
+    public string? City { get; }
+    public string? Country { get; }
+    public string? CountryAbbreviation { get; }
+
+    public string? State { get; }
+
+    public string? MobileTelephoneNumber { get; }
+
+    public string? RoomNumber { get; }
 }
