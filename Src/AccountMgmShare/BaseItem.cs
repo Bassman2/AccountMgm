@@ -30,6 +30,13 @@ public abstract class BaseItem
         UserPrincipalName = item.UserPrincipalName;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BaseItem"/> class with the specified name and security identifier (SID).
+    /// This constructor is typically used when creating a directory service item with minimal information,
+    /// such as when only the name and SID are known or required.
+    /// </summary>
+    /// <param name="name">The name of the directory service item.</param>
+    /// <param name="sid">The security identifier (SID) of the directory service item.</param>
     public BaseItem(string name, string sid) 
     {
         Name = name;
@@ -39,24 +46,14 @@ public abstract class BaseItem
         DistinguishedName = string.Empty;
         SamAccountName = string.Empty;
         UserPrincipalName = string.Empty;
-
     }
 
-    //public static IEnumerable<T> GetPrinciples<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.NonPublicConstructors | DynamicallyAccessedMemberTypes.PublicConstructors)] T, P>() where T : BaseItem, new() where P : Principal, new()
-    //{
-    //    using var context = new PrincipalContext(ContextType.Domain, domainName);
-    //    using var principal = new P();
-    //    using var searcher = new PrincipalSearcher(principal);
-    //    using var results = searcher.FindAll();
-    //    foreach (Principal result in results)
-    //    {
-    //        if (result is P item)
-    //        {
-    //            yield return (T)Activator.CreateInstance(typeof(T), ConstructorDefault, null, [item], null)!;
-    //        }
-    //    }
-    //}
-
+    /// <summary>
+    /// Retrieves the groups that the current directory service item is a member of.
+    /// </summary>
+    /// <returns>
+    /// An enumerable collection of <see cref="Group"/> objects representing the groups to which the item belongs.
+    /// </returns>
     public IEnumerable<Group> GetGroups()
     {
         using var context = new PrincipalContext(ContextType.Domain, domainName);
@@ -94,10 +91,27 @@ public abstract class BaseItem
         return principal?.IsMemberOf(groupPrincipal) ?? false;
     }
 
+    /// <summary>
+    /// Gets a string containing detailed information about the directory service item,
+    /// including its name, description, SID, display name, distinguished name, SAM account name, and user principal name.
+    /// </summary>
     public virtual string Info => $"Name: {Name}\r\nDescription: {Description}\r\nSid: {Sid}\r\nDisplayName: {DisplayName}\r\nDistinguishedName: {DistinguishedName}\r\nSamAccountName: {SamAccountName}\r\nUserPrincipalName: {UserPrincipalName}";
 
+    /// <summary>
+    /// Returns a hash code for the current directory service item based on its security identifier (SID).
+    /// </summary>
+    /// <returns>
+    /// An integer hash code representing the current object.
+    /// </returns>
     public override int GetHashCode() => Sid.GetHashCode();
 
+    /// <summary>
+    /// Determines whether the specified object is equal to the current directory service item.
+    /// </summary>
+    /// <param name="obj">The object to compare with the current item.</param>
+    /// <returns>
+    /// <c>true</c> if the specified object is a <see cref="BaseItem"/> and has the same security identifier (SID); otherwise, <c>false</c>.
+    /// </returns>
     public override bool Equals(object? obj) => /*obj != null &&*/ obj is BaseItem item && Sid == item.Sid;
 
     /// <summary>

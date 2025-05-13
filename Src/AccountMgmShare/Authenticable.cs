@@ -22,13 +22,21 @@ public abstract class Authenticable : BaseItem
         ScriptPath = item.ScriptPath;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Authenticable"/> class with the specified name and SID.
+    /// </summary>
+    /// <param name="name">The name of the authenticable item.</param>
+    /// <param name="sid">The security identifier (SID) of the authenticable item.</param>
     public Authenticable(string name, string sid) : base(name, sid)
     {
         HomeDirectory = string.Empty;
-        ScriptPath= string.Empty;
+        ScriptPath = string.Empty;
     }
 
-    public override string Info => $"{base.Info}\r\nEnabled: {Enabled}";
+    /// <summary>
+    /// Gets a string containing information about the authenticable item.
+    /// </summary>
+    public override string Info => $"Enabled: {Enabled}";
 
     /// <summary>
     /// Gets the account expiration date of the directory service item.

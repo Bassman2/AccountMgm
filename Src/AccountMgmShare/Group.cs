@@ -14,9 +14,21 @@ public class Group : BaseItem
         IsSecurityGroup = item.IsSecurityGroup;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Group"/> class with the specified name and security identifier (SID).
+    /// </summary>
+    /// <param name="name">The name of the group.</param>
+    /// <param name="sid">The security identifier (SID) of the user.</param>
     public Group(string name, string sid) : base(name, sid)
     { }
 
+    /// <summary>
+    /// Finds and returns a group in the domain by the specified name.
+    /// </summary>
+    /// <param name="name">The name of the group to search for.</param>
+    /// <returns>
+    /// A <see cref="Group"/> object representing the found group, or <c>null</c> if no group with the specified name exists.
+    /// </returns>
     public static Group? FindGroup(string name)
     {
         using var context = new PrincipalContext(ContextType.Domain, domainName);
@@ -46,10 +58,16 @@ public class Group : BaseItem
     }
 
     /// <summary>
-    /// Retrieves groups in the domain that match the specified name filter.
+    /// Retrieves groups in the domain that match the specified filter criteria.
     /// </summary>
-    /// <param name="filter">The name filter to apply when searching for groups.</param>
-    /// <returns>An enumerable collection of <see cref="Group"/> objects.</returns>
+    /// <param name="displayName">The display name to filter groups by, or <c>null</c> to ignore this filter.</param>
+    /// <param name="name">The name to filter groups by, or <c>null</c> to ignore this filter.</param>
+    /// <param name="samAccountName">The SAM account name to filter groups by, or <c>null</c> to ignore this filter.</param>
+    /// <param name="userPrincipalName">The user principal name (UPN) to filter groups by, or <c>null</c> to ignore this filter.</param>
+    /// <param name="isSecurityGroup">A value indicating whether to filter groups by security group status, or <c>null</c> to ignore this filter.</param>
+    /// <returns>
+    /// An enumerable collection of <see cref="Group"/> objects that match the specified filter criteria.
+    /// </returns>
     public static IEnumerable<Group> FindGroups(
         // BaseItem
         string? displayName = null,

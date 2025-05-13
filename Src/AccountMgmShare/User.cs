@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace AccountMgm;
+﻿namespace AccountMgm;
 
 /// <summary>
 /// Represents a user in the account management system.
@@ -21,6 +19,11 @@ public class User : Authenticable
         VoiceTelephoneNumber = item.VoiceTelephoneNumber;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="User"/> class with the specified name and security identifier (SID).
+    /// </summary>
+    /// <param name="name">The name of the user.</param>
+    /// <param name="sid">The security identifier (SID) of the user.</param>
     public User(string name, string sid) : base(name, sid)
     {
         EmailAddress = string.Empty;
@@ -31,6 +34,12 @@ public class User : Authenticable
         VoiceTelephoneNumber = string.Empty;
     }
 
+    /// <summary>
+    /// Gets the current user from the domain context.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="User"/> object representing the currently logged-in user.
+    /// </returns>
     public static User Current()
     {
         //using var context = new PrincipalContext(ContextType.Domain, domainName);
@@ -38,6 +47,13 @@ public class User : Authenticable
         return new User(item);
     }
 
+    /// <summary>
+    /// Finds and returns a user in the domain by the specified name.
+    /// </summary>
+    /// <param name="name">The name of the user to search for.</param>
+    /// <returns>
+    /// A <see cref="User"/> object representing the found user, or <c>null</c> if no user with the specified name exists.
+    /// </returns>
     public static User? FindUser(string name)
     {
         using var context = new PrincipalContext(ContextType.Domain, domainName);
@@ -67,10 +83,22 @@ public class User : Authenticable
     }
 
     /// <summary>
-    /// Retrieves users in the domain whose names match the specified filter.
+    /// Retrieves users in the domain that match the specified filter criteria.
     /// </summary>
-    /// <param name="name">The name filter to apply when searching for users.</param>
-    /// <returns>An enumerable collection of <see cref="User"/> objects that match the filter.</returns>
+    /// <param name="displayName">The display name to filter users by, or <c>null</c> to ignore this filter.</param>
+    /// <param name="name">The name to filter users by, or <c>null</c> to ignore this filter.</param>
+    /// <param name="samAccountName">The SAM account name to filter users by, or <c>null</c> to ignore this filter.</param>
+    /// <param name="userPrincipalName">The user principal name (UPN) to filter users by, or <c>null</c> to ignore this filter.</param>
+    /// <param name="enabled">A value indicating whether to filter users by enabled status, or <c>null</c> to ignore this filter.</param>
+    /// <param name="emailAddress">The email address to filter users by, or <c>null</c> to ignore this filter.</param>
+    /// <param name="employeeId">The employee ID to filter users by, or <c>null</c> to ignore this filter.</param>
+    /// <param name="givenName">The given name (first name) to filter users by, or <c>null</c> to ignore this filter.</param>
+    /// <param name="middleName">The middle name to filter users by, or <c>null</c> to ignore this filter.</param>
+    /// <param name="surname">The surname (last name) to filter users by, or <c>null</c> to ignore this filter.</param>
+    /// <param name="voiceTelephoneNumber">The voice telephone number to filter users by, or <c>null</c> to ignore this filter.</param>
+    /// <returns>
+    /// An enumerable collection of <see cref="User"/> objects that match the specified filter criteria.
+    /// </returns>
     public static IEnumerable<User> FindUsers(
         // BaseItem
         string? displayName = null,
@@ -111,6 +139,10 @@ public class User : Authenticable
         }
     }
 
+    /// <summary>
+    /// Gets a string containing detailed information about the user, including base account information and user-specific properties
+    /// such as given name, middle name, surname, phone number, employee ID, and email address.
+    /// </summary>
     public override string Info => $"{base.Info}\r\nGivenName: {GivenName}\r\nMiddleName: {MiddleName}\r\nSurname: {Surname}\r\nPhone: {VoiceTelephoneNumber}\r\nEmployeeId: {EmployeeId}\r\nEmailAddress: {EmailAddress}";
 
 
