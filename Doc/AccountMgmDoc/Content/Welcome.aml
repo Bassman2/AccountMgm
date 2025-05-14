@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="f917af56-7043-4ae5-ac21-b280986871bb" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>AccountMgm is a simple API for AD/LDAP.</para>
+		</introduction>
+
+		<section>
+			<title>Getting Started</title>
+			<content>
+				
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="be376154-b960-4a2d-a0e3-de169cc22f24" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

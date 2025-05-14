@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Topics>
+  <Topic id="f917af56-7043-4ae5-ac21-b280986871bb" visible="True" isDefault="true" isSelected="true" title="Welcome to the AccountMgm Library">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Welcome" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="be376154-b960-4a2d-a0e3-de169cc22f24" visible="True" title="Version History">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="version, history" />
+    </HelpKeywords>
+  </Topic>
+</Topics>

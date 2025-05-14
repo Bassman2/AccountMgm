@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents a computer in the account management system.
 /// </summary>
-internal class Computer : Authenticable
+public class Computer : Authenticable
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="Computer"/> class.

@@ -1,7 +1,4 @@
-﻿using System.Diagnostics.Metrics;
-using System.IO;
-
-namespace AccountMgm;
+﻿namespace AccountMgm;
 
 /// <summary>
 /// Represents a user in the account management system.

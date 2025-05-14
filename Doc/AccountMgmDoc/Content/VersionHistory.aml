@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="be376154-b960-4a2d-a0e3-de169cc22f24" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>The topics in this section describe the various changes made to the AccountMgm over the
+life of the project.</para>
+		</introduction>
+
+		<section>
+			<title>Version 0.1 was released on May 12th, 2025.</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Creation</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<section>
+			<title>Version 0.2 was released on May 13th, 2025.</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Updates</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<section>
+			<title>Version 0.3 was released on May 14th, 2025.</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Updates</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="f917af56-7043-4ae5-ac21-b280986871bb" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>
