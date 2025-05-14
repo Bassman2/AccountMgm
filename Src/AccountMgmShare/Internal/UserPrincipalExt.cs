@@ -1,7 +1,4 @@
-﻿using System.DirectoryServices.AccountManagement;
-using System.Security.Principal;
-
-namespace AccountMgm;
+﻿namespace AccountMgm;
 
 [DirectoryObjectClass("user")]
 [DirectoryRdnPrefix("CN")]
@@ -110,8 +107,8 @@ internal class UserPrincipalExt : UserPrincipal
 
     private string? GetString(string name)
     {
-        var res = ExtensionGet(name);
-        return res.Length != 1 ? null : (string)res[0];
+        var res = (string?)ExtensionGet(name).SingleOrDefault();
+        return res; //.Length != 1 ? null : (string)res[0];
     }
 
     private void SetString(string name, string? value)

@@ -1,4 +1,7 @@
-﻿namespace AccountMgm;
+﻿using System.Diagnostics.Metrics;
+using System.IO;
+
+namespace AccountMgm;
 
 /// <summary>
 /// Represents a user in the account management system.
@@ -162,7 +165,8 @@ public class User : Authenticable
     /// Gets a string containing detailed information about the user, including base account information and user-specific properties
     /// such as given name, middle name, surname, phone number, employee ID, and email address.
     /// </summary>
-    public override string Info => $"{base.Info}\r\nGivenName: {GivenName}\r\nMiddleName: {MiddleName}\r\nSurname: {Surname}\r\nPhone: {VoiceTelephoneNumber}\r\nEmployeeId: {EmployeeId}\r\nEmailAddress: {EmailAddress}\r\nRoomNumber: {RoomNumber}";
+    public override string Info => $"{base.Info}\r\nGivenName: {GivenName}\r\nMiddleName: {MiddleName}\r\nSurname: {Surname}\r\nPhone: {VoiceTelephoneNumber}\r\nEmployeeId: {EmployeeId}\r\nEmailAddress: {EmailAddress}\r\nRoomNumber: {RoomNumber}\r\n" + 
+        $"Title: {Title}\r\nDepartment: {Department}\r\nCompany: {Company}\r\nStreet: {Street}\r\nPostalCode: {PostalCode}\r\nCity: {City}\r\nCountry: {Country}\r\nCountryAbbreviation: {CountryAbbreviation}\r\nState: {State}\r\nMobileTelephoneNumber: {MobileTelephoneNumber}";
 
     /// <summary>
     /// Gets the email address of the user.
@@ -196,20 +200,58 @@ public class User : Authenticable
 
     // extention
 
+    /// <summary>
+    /// Gets the title of the user.
+    /// </summary>
     public string? Title { get; }
+
+    /// <summary>
+    /// Gets the department of the user.
+    /// </summary>
     public string? Department { get; }
 
+    /// <summary>
+    /// Gets the company of the user.
+    /// </summary>
     public string? Company { get; }
 
+    /// <summary>
+    /// Gets the street address of the user.
+    /// </summary>
     public string? Street { get; }
+
+    /// <summary>
+    /// Gets the postal code of the user.
+    /// </summary>
     public string? PostalCode { get; }
+
+    /// <summary>
+    /// Gets the city of the user.
+    /// </summary>
     public string? City { get; }
+
+    /// <summary>
+    /// Gets the country of the user.
+    /// </summary>
     public string? Country { get; }
+
+    /// <summary>
+    /// Gets the country abbreviation of the user.
+    /// </summary>
     public string? CountryAbbreviation { get; }
 
+    /// <summary>
+    /// Gets the state of the user.
+    /// </summary>
     public string? State { get; }
 
+    /// <summary>
+    /// Gets the mobile telephone number of the user.
+    /// </summary>
     public string? MobileTelephoneNumber { get; }
 
+    /// <summary>
+    /// Gets the room number of the user.
+    /// </summary>
     public string? RoomNumber { get; }
 }
