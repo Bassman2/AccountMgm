@@ -2,7 +2,7 @@
 
 [DirectoryObjectClass("user")]
 [DirectoryRdnPrefix("CN")]
-internal class UserPrincipalExt : UserPrincipal
+public class UserPrincipalExt : UserPrincipal
 {
     public UserPrincipalExt(PrincipalContext context)
        : base(context)

@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Authenticable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BaseItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Computer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DebugFunc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Group.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internal\UserPrincipalExt.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Service\DirectoryService.cs" />
