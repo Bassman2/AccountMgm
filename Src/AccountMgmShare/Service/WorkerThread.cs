@@ -11,7 +11,7 @@ public class WorkerThread : IDisposable
 
     public WorkerThread()
     {
-        _thread = new Thread(WorkLoop) { IsBackground = true };
+        _thread = new Thread(WorkLoop) { Name = "MyWorkerThread", IsBackground = true };
         _thread.Start();
     }
 
