@@ -280,6 +280,32 @@ public class DirectoryService : WorkerThread, IDisposable
             }
         }
     }
+
+
+    public void AddUserToGroup(UserPrincipal user, string groupName)
+    {
+        Invoke(() => AddUserToGroupInt(user, groupName));
+    }
+
+    private void AddUserToGroupInt(UserPrincipal user, string groupName)
+    {
+        using var group = GroupPrincipal.FindByIdentity(context, IdentityType.Name, groupName);
+        group.Members.Add(user);
+        group.Save();
+
+    }
+
+    public void RemoveUserFromGroup(UserPrincipal user, string groupName)
+    {
+        Invoke(() => RemoveUserFromGroupint(user, groupName));
+    }
+
+    private void RemoveUserFromGroupint(UserPrincipal user, string groupName)
+    {
+        using var group = GroupPrincipal.FindByIdentity(context, IdentityType.Name, groupName);
+        group.Members.Remove(user);
+        group.Save();
+    }
 }
 
 
