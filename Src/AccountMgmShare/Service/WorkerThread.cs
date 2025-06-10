@@ -7,7 +7,7 @@ namespace AccountMgm.Service;
 public class WorkerThread : IDisposable
 {
     private readonly Thread _thread;
-    private readonly BlockingCollection<Action> _queue = new();
+    private readonly BlockingCollection<Action> _queue = []; // new();
 
     public WorkerThread()
     {
