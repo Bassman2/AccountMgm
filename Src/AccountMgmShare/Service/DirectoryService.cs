@@ -281,6 +281,28 @@ public class DirectoryService : WorkerThread, IDisposable
         }
     }
 
+    public IEnumerable<GroupPrincipal> GetGroups(string sid)
+    {
+        return InvokeEnumerable(() => GetGroupsInt(sid));
+    }
+
+    private IEnumerable<GroupPrincipal> GetGroupsInt(string sid)
+    {
+        using var principal = Principal.FindByIdentity(context, IdentityType.Sid, sid);
+        using var results = principal.GetGroups(context);
+        foreach (var result in results)
+        {
+            if (result is GroupPrincipal group)
+            {
+                yield return group;
+            }
+            else
+            {
+                throw new Exception(result.DisplayName);
+            }
+        }
+    }
+
 
     public void AddUserToGroup(UserPrincipal user, string groupName)
     {
@@ -295,6 +317,20 @@ public class DirectoryService : WorkerThread, IDisposable
 
     }
 
+    public void AddUserToGroup(string userSid, string groupName)
+    {
+        Invoke(() => AddUserToGroupInt(userSid, groupName));
+    }
+
+    private void AddUserToGroupInt(string userSid, string groupName)
+    {
+        using var user = UserPrincipal.FindByIdentity(context, IdentityType.Sid, userSid);
+        using var group = GroupPrincipal.FindByIdentity(context, IdentityType.Name, groupName);
+        group.Members.Add(user);
+        group.Save();
+
+    }
+
     public void RemoveUserFromGroup(UserPrincipal user, string groupName)
     {
         Invoke(() => RemoveUserFromGroupint(user, groupName));
@@ -302,6 +338,18 @@ public class DirectoryService : WorkerThread, IDisposable
 
     private void RemoveUserFromGroupint(UserPrincipal user, string groupName)
     {
+        using var group = GroupPrincipal.FindByIdentity(context, IdentityType.Name, groupName);
+        group.Members.Remove(user);
+        group.Save();
+    }
+    public void RemoveUserFromGroup(string userSid, string groupName)
+    {
+        Invoke(() => RemoveUserFromGroupint(userSid, groupName));
+    }
+
+    private void RemoveUserFromGroupint(string userSid, string groupName)
+    {
+        using var user = UserPrincipal.FindByIdentity(context, IdentityType.Sid, userSid);
         using var group = GroupPrincipal.FindByIdentity(context, IdentityType.Name, groupName);
         group.Members.Remove(user);
         group.Save();
