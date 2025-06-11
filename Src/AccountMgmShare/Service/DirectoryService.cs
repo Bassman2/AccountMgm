@@ -260,6 +260,7 @@ public class DirectoryService : WorkerThread, IDisposable
 
     #endregion
 
+
     public IEnumerable<GroupPrincipal> GetGroups(Principal principal)
     {
         return InvokeEnumerable(() => GetGroupsInt(principal));
@@ -302,6 +303,22 @@ public class DirectoryService : WorkerThread, IDisposable
             }
         }
     }
+
+    public IEnumerable<Principal> GetMembersByGroupName(string groupName)
+    {
+        return InvokeEnumerable(() => GetMembersByGroupNameInt(groupName));
+    }
+
+    private IEnumerable<Principal> GetMembersByGroupNameInt(string groupName)
+    {
+        using var group = GroupPrincipal.FindByIdentity(context, IdentityType.Name, groupName);
+        foreach (var member in group.Members)
+        {
+            yield return member;
+        }
+    }
+
+
 
 
     public void AddUserToGroup(UserPrincipal user, string groupName)
